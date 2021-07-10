@@ -13,13 +13,12 @@ module.exports = function (/* ctx */) {
     supportTS: false,
 
     // https://quasar.dev/quasar-cli/prefetch-feature
-    // preFetch: true,
+    preFetch: true,
 
     // app boot file (/src/boot)
     // --> boot files are part of "main.js"
     // https://quasar.dev/quasar-cli/boot-files
     boot: [
-
       'axios'
     ],
 
@@ -30,9 +29,9 @@ module.exports = function (/* ctx */) {
 
     // https://github.com/quasarframework/quasar/tree/dev/extras
     extras: [
-      // 'ionicons-v4',
+      'ionicons-v4',
       // 'mdi-v5',
-      // 'fontawesome-v5',
+      'fontawesome-v5',
       // 'eva-icons',
       // 'themify',
       // 'line-awesome',
@@ -118,7 +117,24 @@ module.exports = function (/* ctx */) {
     // https://quasar.dev/quasar-cli/developing-pwa/configuring-pwa
     pwa: {
       workboxPluginMode: 'GenerateSW', // 'GenerateSW' or 'InjectManifest'
-      workboxOptions: {}, // only for GenerateSW
+      workboxOptions: {
+        skipWaiting: true,
+        clientsClaim: true,
+        maximumFileSizeToCacheInBytes: 5000000,
+        exclude: [/.(?:png|jpg|jpeg|svg|txt|json)$/],
+        runtimeCaching: [
+          {
+            // Match any request ends with .png, .jpg, .jpeg or .svg.
+            urlPattern: /.(?:png|jpg|jpeg|svg|txt|json)$/,
+            // Apply a cache-first strategy.
+            handler: "CacheFirst",
+            options: {
+              // Use a custom cache name.
+              cacheName: "images"
+            }
+          }
+        ]
+      }, // only for GenerateSW
       manifest: {
         name: '萌典',
         short_name: '萌典',
